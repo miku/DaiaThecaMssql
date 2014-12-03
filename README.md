@@ -29,7 +29,7 @@ The current code was tested with
           
 4. Configuration - context.xml
 
-    * Create database pools
+    * Create database pools - 
     Create a pool for each institution using unique identifiers (e.g. "MyPool").
     The used identifiers will be referenced in web.xml and the configuration-file.
 
@@ -99,8 +99,7 @@ The current code was tested with
 
 5. Configuration - web.xml
         
-    * Create references for database-pool
-      Create references for each database-pool.
+    * Create references for each database-pool.
 
               <resource-ref>
                     <description>My DB Connection</description>
@@ -110,3 +109,110 @@ The current code was tested with
               </resource-ref>
 
 6. Done - you can access the webservice at http://server-ip/Bibliotheca/
+
+--------------------------------------------
+
+##Installation DaiaThecaMssql - Bibliotheca DAIA Service
+
+###Voraussetzungen
+
+Der aktuelle Code wurde getestet mit:
+* Tomcat 6 
+* Maven 3.0.5
+* Bibliotheca 4
+
+###Anleitung
+
+1.  Wechsle in das DaiaThecaMssql Verzeichnis und baue das WebArchive
+    
+        $ cd ./DaiaThecaMssql
+        $ mvn -Prelease-profile install
+
+2. Kopiere das Archive ins Tomcat webapps Verzeichnis
+
+        $ cp target/DaiaThecaMssql-1.0-SNAPSHOT.war ${catalina.base}/webapps/DaiaThecaMssql.war
+
+3. Kopiere den MsSQL Datenbanktreiber nach ${catalina.base}/lib
+
+4. Konfiguration des Projekts - context.xml
+
+    * Datenbank Pools anlegen - 
+        Lege für jede Institution einen Pool mit eindeutigen Namen an.
+        Der wird dann in der web.xml und Konfigurationsdatei benötigt.
+
+            <Resource name="jdbc/MyPool"
+             description="My MsSQL database pool"
+             auth="Container"
+             type="javax.sql.DataSource"
+             maxActive="5"
+             maxIdle="6"
+             minIdle="1"
+             maxWait="250"
+             username="johndoe"
+             password="secret"
+             driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+             url="jdbc:sqlserver://127.0.0.1:1433;database=MYDB"
+            />
+
+    * Institutionen konfigurieren
+
+        * Liste der vorhandenen Institutionen anlegen
+
+                <Parameter name="isils" override="false" description="Comma separated list of available Bibliotheca isils"
+                 value="MYISIL-1,MYISIL-2"
+                />
+
+        * Konfigurationsdateien zu den vorhandenen Institutionen zuweisen
+
+                <Parameter name="MYISIL-1" override="false" 
+                 description="Config file path for this isil in JSON format. Add them in the list of isils above."
+                 value="${catalina.base}/conf/MYISIL1.conf"
+                />
+                <Parameter name="MYISIL-2" override="false" 
+                 description="Config file path for this isil in JSON format. Add them in the list of isils above."
+                 value="${catalina.base}/conf/MYISIL2.conf"
+                />
+
+        * Beispieldatei MYISIL1.conf für Isil MYISIL-1
+
+                {
+                    "institutionurl": "https://my.example.library.org/",
+                    "catalogueurl": "https://my.example.library.org/catalogue",
+                    "isil": "MYISIL-1",
+                    "institutionname": "Example library name",
+                    "description": "Example configuration for finc Bibiotheca service",
+                    "availability": {
+                        "D": 0,
+                        "E": 0,
+                        "e": 1,
+                        "G": 0,
+                        "B": 0,
+                        "M": 0,
+                        "H": 0,
+                        "I": 0,
+                        "J": 0,
+                        "K": 0,
+                        "U": 0,
+                        "T": 0,
+                        "v": 0,
+                        "V": 1,
+                        "P": 1,
+                        "Z": 0
+                    },
+                    "jdbcjndiname": "jdbc/MyPool"
+                }
+
+          Service /rs/createconfig zeigt eine Beispielkonfiguration
+
+5. Konfiguration des Projekts - web.xml
+
+    * Referenzen für alle Datenbankpools anlegen.
+
+            <resource-ref>
+                <description>My DB Connection</description>
+                <res-ref-name>jdbc/MyPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+            </resource-ref>
+
+6. Fertig - der DaiaThecaMssql Webservice ist nun erreichbar unter http://server-ip/Bibliotheca/
