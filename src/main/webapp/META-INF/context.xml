@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context antiJARLocking="true" path="/daiathecamssql">
+
+    <!-- Example database pool. See web.xml to create a reference. -->
+    <!--
+    <Resource name="jdbc/MyPool"
+        description="My MsSQL database pool"
+        auth="Container"
+        type="javax.sql.DataSource"
+        maxActive="5"
+        maxIdle="6"
+        minIdle="1"
+        maxWait="250"
+        username="johndoe"
+        password="secret"
+        driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+        url="jdbc:sqlserver://127.0.0.1:1433;database=MYDB"
+    />
+    -->
+    
+    <!-- Example institution config -->
+    <!-- 
+    <Parameter name="isils" override="false" description="Comma separated list of available Bibliotheca isils"
+        value="MYISIL-1,MYISIL-2"
+    />
+    <Parameter name="MYISIL-1" override="false" 
+        description="Config file path for this isil in JSON format. Add them in the list of isils above."
+        value="${catalina.base}/conf/MYISIL1.conf"
+    />
+    <Parameter name="MYISIL-2" override="false" 
+        description="Config file path for this isil in JSON format. Add them in the list of isils above."
+        value="${catalina.base}/conf/MYISIL2.conf"
+    />
+    -->
+    
+    <Parameter name="DAIA_VERSION"  value="0.5" />
+
+</Context>
