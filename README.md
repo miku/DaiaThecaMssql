@@ -109,4 +109,4 @@ The current code was tested with
                     <res-auth>Container</res-auth>
               </resource-ref>
 
-6. Done - you can access the webservice at http://<tomcat-address>/Bibliotheca/
+6. Done - you can access the webservice at http://server-ip/Bibliotheca/
